@@ -38,6 +38,7 @@ public:
 	void delete_line(int distance);
 
 	void canny_edge_detection(float sigma, float tlow, float thig, int distance);
+	void canny_ablation_experiment(float sigma, float tlow, float thig, int distance, string savename);
 	void save_result();
 
 	CImg<int> matrix2image(int *matrix);

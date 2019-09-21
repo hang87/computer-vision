@@ -24,5 +24,14 @@ int main() {
 
 	Canny image6("stpietro.bmp");
 	image6.canny_edge_detection(2.0, 0.25, 0.75, 20);
+
+	// Canny image7("lena.bmp");
+	// image7.canny_ablation_experiment(2.0, 0.25, 0.75, 10, "distance1-");
+	// Canny image8("lena.bmp");
+	// image8.canny_ablation_experiment(2.0, 0.25, 0.75, 20, "distance2-");
+	// Canny image9("lena.bmp");
+	// image9.canny_ablation_experiment(2.0, 0.25, 0.75, 30, "distance3-");
+	// Canny image10("lena.bmp");
+	// image10.canny_ablation_experiment(2.0, 0.25, 0.75, 40, "distance4-");
 	return 0;
 }

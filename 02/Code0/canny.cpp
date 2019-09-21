@@ -30,8 +30,8 @@ Canny::Canny(string path) {
 	CImg<int> image(path.c_str());
 	this->img = image;
 
-	this->cols = img.width();
-	this->rows = img.height();
+	this->rows = img.width();
+	this->cols = img.height();
 
 	delta_x = new int[rows * cols]; memset(delta_x, 0x0, rows * cols *sizeof(int));
 	delta_y = new int[rows * cols]; memset(delta_y, 0x0, rows * cols * sizeof(int));
@@ -623,6 +623,24 @@ void Canny::canny_edge_detection(float sigma, float tlow, float thig, int distan
 	save_result();
 }
 
+void Canny::canny_ablation_experiment(float sigma, float tlow, float thig, int distance, string savename) {
+	string out_name = this->name;
+
+	RGB2Gray();
+	gaussian_smooth(sigma);
+	derrivative_x_y();
+	magnitude_x_y();
+	radian_direction(-1, -1);
+	non_max_supp();
+	apply_hysteresis(tlow, thig);
+	connect_line(distance);
+	delete_line(distance);
+
+	CImg<int> d_line_img = matrix2image(d_line);
+	string outpath = "./ae_ouput/" + savename + out_name;
+	d_line_img.save(outpath.c_str());
+}
+
 void Canny::save_result() {
 	string out_name = this->name;
 
@@ -630,23 +648,23 @@ void Canny::save_result() {
 	img.save(outpath.c_str());
 
 	CImg<int> guassian_img = matrix2image(smoothedim);
-	outpath = "./output/guassian-" + out_name;;
+	outpath = "./output/guassian-" + out_name;
 	guassian_img.save(outpath.c_str());
 
 	CImg<int> nms_img = matrix2image(nms);
-	outpath = "./output/nms-" + out_name;;
+	outpath = "./output/nms-" + out_name;
 	nms_img.save(outpath.c_str());
 
 	CImg<int> edge_img = matrix2image(edge);
-	outpath = "./output/edge-" + out_name;;
+	outpath = "./output/edge-" + out_name;
 	edge_img.save(outpath.c_str());
 
 	CImg<int> c_line_img = matrix2image(c_line);
-	outpath = "./output/cline-" + out_name;;
+	outpath = "./output/cline-" + out_name;
 	c_line_img.save(outpath.c_str());
 
 	CImg<int> d_line_img = matrix2image(d_line);
-	outpath = "./output/dline-" + out_name;;
+	outpath = "./output/dline-" + out_name;
 	d_line_img.save(outpath.c_str());
 
 }
