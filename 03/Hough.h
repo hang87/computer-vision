@@ -1,41 +1,58 @@
-#include "CImg.h"
+#pragma once
+#ifndef HOUGH_H
+#define HOUGH_H
+
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
+#include "CImg.h"
 
 using namespace std;
 using namespace cimg_library;
 
-struct Point {
-	int x, y, cnt;
-	Point(int _x, int _y, int _cnt): x(_x), y(_y), cnt(_cnt) {}
-};
-
-struct Line {
-	double k, b;
-	Line(double _k, double _b): k(_k), b(_b) {}
-};
-
 class Hough {
 private:
-    CImg<int> img;
-    CImg<int> result_img;
-    CImg<int> blur_img;
-    CImg<float> hough_space;
-    double sigma;
-    double gra_thred;
-    double vote_thred;
-    double peak_dis;
-    int x_min, x_max, y_min, y_max;
-    vector<Point> peaks;
-    vector<Line> lines;
-    vector<Point> intersections;
+    CImg<float> image;              // the original image
+    CImg<float> outputImage;        // the image of hough transformation
+    CImg<float> grayImage;          // the gray image
+    CImg<float> thresholdImage;     // threshold proccessed image
+    CImg<float> houghImage;         // hough transformation image
+
+    vector<float> setSin;           // sin set
+	vector<float> setCos;           // cos set
+    vector< vector<float> > filter;   // guassian filter
+
+    int pointNumber;                // num of angle points
+    vector< pair<int, int> > lines;   // detected line set
+	vector<int> lineWeight;         // line's weight(voting value in hough space) set
+    vector<int> sortLineWeight;     // from big to small
+	CImg<float> edge;               // edge line
+
+    int circleNumber;
+	int minRadius;
+	int maxRadius;
+    vector<pair<int, int>> circles; 
+	vector<pair<int, int>> voteSet; 
+	vector<pair<int, int>> center;
+	vector<int> circleWeight;
+	vector<int> sortCircleWeight;
 public:
-    Hough(double sigma, double gra_thred, double vote_thred, double peak_dis, string path);
+    Hough(string, string, string, int, int minR = 0, int maxR = 0);
+
     void RGB2Gray();
-    void guassionFilter();
-    void Cartesian2Hough();
-    void fingPeeks();
-    void drawLine();
-    void drawIntersections();
+    vector< vector<float> > createGuassianFilter(int, int, float);    // create guassian filter
+    CImg<float> useFilter(CImg<float>&, vector< vector<float> >&);    // guassian filtering
+    CImg<float> sobel(CImg<float>&, CImg<float>&);                  // sobel gradient getting
+    CImg<float> nonMaxSupp(CImg<float>&, CImg<float>&);             // non-maximun suppression
+    CImg<float> threshold(CImg<float>&, int, int);                  // threshold processing
+    void houghLinesTransform(CImg<float>&);                         // hough line transformation
+    void houghLinesDetect();                                        // hough line detection
+    int getMaxHough(CImg<float>&, int&, int&, int&);                // get the cross point in hough space
+    void drawLine(string input, string output);
+
+    void houghCirclesTransform(CImg<float>&, int, int, string);
+    void houghCirclesDetect();
+    void drawCircle(int, int, string);
 };
+
+#endif

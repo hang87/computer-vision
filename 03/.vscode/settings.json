@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        ".eslintrc": "json",
+        "*.vue": "html",
+        "iostream": "cpp",
+        "ostream": "cpp"
+    }
+}

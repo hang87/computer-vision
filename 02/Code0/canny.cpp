@@ -618,6 +618,8 @@ void Canny::canny_edge_detection(float sigma, float tlow, float thig, int distan
 	radian_direction(-1, -1);
 	non_max_supp();
 	apply_hysteresis(tlow, thig);
+	// CImg<int> d_line_img = matrix2image(edge);
+	// d_line_img.display();
 	connect_line(distance);
 	delete_line(distance);
 	save_result();
