@@ -98,8 +98,10 @@ Hough::Hough(string input, string output, string mode, int number, int minR, int
 
 		pointNumber = number;
         houghLinesTransform(thresholdImage);                // hough transformation
+		houghImage.display();
+
         houghLinesDetect();                                 // line detection
-        drawLine(input, output);
+        extraDrawLine();
 	}
 }
 
@@ -329,7 +331,7 @@ void Hough::houghLinesDetect() {
     // put the not zero point of the hogh space(i.e. line) in a vector
     cimg_forXY(houghImage, x, y) {
 		if (houghImage(x, y) != 0) {
-			lines.push_back(make_pair(y, x));
+			lines.push_back(make_pair(y, x));	// make_pair(theta, p)
 			lineWeight.push_back(houghImage(x, y));
 		}
 	}
@@ -526,7 +528,6 @@ void Hough::drawCircle(int r, int circle_id, string input) {
 					outputImage.draw_circle(a+192, b+65, r+1, red, 5.0f, 1);
 					break;
 				} else {
-					cout << 222;
 					center.push_back(make_pair(a, b));
 					outputImage.draw_circle(a+108, b+67, 5, red);
 					outputImage.draw_circle(a+108, b+67, r, red, 5.0f, 1);
@@ -545,4 +546,33 @@ void Hough::drawCircle(int r, int circle_id, string input) {
 			}
 		}
 	}
+}
+
+void Hough::extraDrawLine() {
+	CImg<float> tempImage = outputImage;
+    int width = image._width, height = image._height;
+
+	edge = CImg<float>(width, height, 1, 1, 0);
+	sortLineWeight = lineWeight;
+	sort(sortLineWeight.begin(), sortLineWeight.end(), greater<int>()); // sort weight array
+
+	vector< pair<int, int> > result; // line with top K(pointNumber) wights
+	for (int i = 0; i < pointNumber; i++) {
+		int weight = sortLineWeight[i], index;
+		vector<int>::iterator iter = find(lineWeight.begin(), lineWeight.end(), weight);
+		index = iter - lineWeight.begin();
+		result.push_back(lines[index]);
+	}
+
+	for (int i = 0; i < result.size(); i++) {
+		int theta = result[i].first, p = result[i].second;
+		cout << theta << " " << p << endl;
+		cimg_forXY(tempImage, x, y) {
+			int x0 = x - width / 2, y0 = height / 2 - y;
+			if (p == x0 * setCos[theta] + y0 * setSin[theta]) {
+				tempImage(x, y, 0, 2) = 255;
+			}
+		}
+	}
+	tempImage.display();
 }

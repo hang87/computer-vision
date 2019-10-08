@@ -53,6 +53,8 @@ public:
     void houghCirclesTransform(CImg<float>&, int, int, string);
     void houghCirclesDetect();
     void drawCircle(int, int, string);
+
+    void extraDrawLine();
 };
 
 #endif
