@@ -20,9 +20,9 @@ int main() {
 	// Hough *houghTrasform15 = new Hough("data/input/Dataset2/9.bmp", "result/result2/9.bmp", "circle", 4, 30, 40);   // edit
 	// Hough *houghTrasform16 = new Hough("data/input/Dataset2/10.bmp", "result/result2/10.bmp", "circle", 3, 15, 20);
 
-    Hough *houghTrasform1 = new Hough("data/input/Dataset3/1.bmp", "data/output/result1/1.bmp", "extra", 10);
-    Hough *houghTrasform2 = new Hough("data/input/Dataset3/2.bmp", "data/output/result1/1.bmp", "extra", 10);
-    Hough *houghTrasform3 = new Hough("data/input/Dataset3/3.bmp", "data/output/result1/1.bmp", "extra", 10);
+    Hough *houghTrasform1 = new Hough("data/input/Dataset3/1.bmp", "data/output/result1/1.bmp", "extra", 15);
+    Hough *houghTrasform2 = new Hough("data/input/Dataset3/2.bmp", "data/output/result1/1.bmp", "extra", 15);
+    Hough *houghTrasform3 = new Hough("data/input/Dataset3/3.bmp", "data/output/result1/1.bmp", "extra", 15);
     
     return 0;
 }

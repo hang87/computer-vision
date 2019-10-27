@@ -567,12 +567,12 @@ void Hough::extraDrawLine() {
 	for (int i = 0; i < result.size(); i++) {
 		int theta = result[i].first, p = result[i].second;
 		cout << theta << " " << p << endl;
-		cimg_forXY(tempImage, x, y) {
+		cimg_forXY(edge, x, y) {
 			int x0 = x - width / 2, y0 = height / 2 - y;
-			if (p == x0 * setCos[theta] + y0 * setSin[theta]) {
-				tempImage(x, y, 0, 2) = 255;
+			if (p == (int)(x0 * setCos[theta] + y0 * setSin[theta])) {
+				outputImage(x, y, 0, 2) = 255;
 			}
 		}
 	}
-	tempImage.display();
+	outputImage.display();
 }
